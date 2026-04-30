@@ -32,7 +32,7 @@ resource "aws_instance" "aws06_instance" {
   }
 }
 # 2. Code Deploy Agent, Docker 설치 대기
-resource "null_resource" "aws00_delay" {
+resource "null_resource" "aws06_delay" {
   provisioner "local-exec" {
     command = "sleep 180"
   }
@@ -40,10 +40,10 @@ resource "null_resource" "aws00_delay" {
 }
 # 3. 원본 instance를 이용해 AMI 생성
 resource "aws_ami_from_instance" "aws06_ami" {
-  name               = "${var.prefix}-instance-ami"
-  source_instance_id = aws_instance.aws06_instance.id
+  name                    = "${var.prefix}-instance-ami"
+  source_instance_id      = aws_instance.aws06_instance.id
   snapshot_without_reboot = true
-  depends_on         = [null_resource.aws06_delay]
+  depends_on              = [null_resource.aws06_delay]
   tags = {
     Name = "${var.prefix}-instance-ami"
   }
