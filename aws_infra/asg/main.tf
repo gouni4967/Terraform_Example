@@ -1,21 +1,21 @@
 # aws_infra/asg/main.tf
 # 시작템플릿
-resource "aws_launch_template" "aws00_launch_template" {
+resource "aws_launch_template" "aws06_launch_template" {
   name_prefix   = "${var.prefix}-launch-template-"
-  image_id      = data.aws_ami.aws00_instance_ami.id
+  image_id      = data.aws_ami.aws06_instance_ami.id
   instance_type = var.instance_type
   key_name      = var.key_name
 
   iam_instance_profile {
-    name = data.aws_iam_instance_profile.aws00_ec2_instance_profile.name
+    name = data.aws_iam_instance_profile.aws06_ec2_instance_profile.name
   }
   network_interfaces {
     associate_public_ip_address = "false"
     security_groups = [
-      data.aws_security_group.aws00_ssh_sg.id,
-      data.aws_security_group.aws00_http_sg.id
+      data.aws_security_group.aws06_ssh_sg.id,
+      data.aws_security_group.aws06_http_sg.id
     ]
-    subnet_id = element(data.aws_subnets.aws00_private_subnets.ids, count.index)
+    subnet_id = element(data.aws_subnets.aws06_private_subnets.ids, count.index)
   }
   tag_specifications {
     resource_type = "instance"

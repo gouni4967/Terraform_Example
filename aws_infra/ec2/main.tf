@@ -1,14 +1,14 @@
 # aws_infra/ec2/main.tf
 # 1. 원본 instance 생성
-resource "aws_instance" "aws00_instance" {
+resource "aws_instance" "aws06_instance" {
   ami                         = var.ami_id
   instance_type               = var.instance_type
   associate_public_ip_address = true
   key_name                    = var.key_name
-  subnet_id                   = data.aws_subnet.aws00_public_subnet.id
+  subnet_id                   = data.aws_subnet.aws06_public_subnet.id
   security_groups = [
-    data.aws_security_group.aws00_ssh_sg.id,
-    data.aws_security_group.aws00_http_sg.id
+    data.aws_security_group.aws06_ssh_sg.id,
+    data.aws_security_group.aws06_http_sg.id
   ]
   # CodeDeploy Agent, Docker 설치
   user_data = <<-EOF
@@ -36,14 +36,14 @@ resource "null_resource" "aws00_delay" {
   provisioner "local-exec" {
     command = "sleep 180"
   }
-  depends_on = [aws_instance.aws00_instance]
+  depends_on = [aws_instance.aws06_instance]
 }
 # 3. 원본 instance를 이용해 AMI 생성
-resource "aws_ami_from_instance" "aws00_ami" {
+resource "aws_ami_from_instance" "aws06_ami" {
   name               = "${var.prefix}-instance-ami"
-  source_instance_id = aws_instance.aws00_instance.id
+  source_instance_id = aws_instance.aws06_instance.id
   snapshot_without_reboot = true
-  depends_on         = [null_resource.aws00_delay]
+  depends_on         = [null_resource.aws06_delay]
   tags = {
     Name = "${var.prefix}-instance-ami"
   }
