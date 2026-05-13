@@ -8,7 +8,7 @@ terraform {
   }
   backend "s3" {
     bucket = "aws06-terraform-state-bucket"
-    key    = "ec2/terraform.tfstate"
+    key    = "s3/terraform.tfstate"
     region = "ap-northeast-2"
     dynamodb_table = "aws06-terraform-locks"
     encrypt = true

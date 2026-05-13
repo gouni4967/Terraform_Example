@@ -1,10 +1,17 @@
-# terraform.tf
+# aws_infra/ec2/terraform.tf
 terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+  }
+  backend "s3" {
+    bucket         = "aws06-terraform-state-bucket"
+    key            = "network/terraform.tfstate"
+    region         = "ap-northeast-2"
+    dynamodb_table = "aws06-terraform-locks"
+    encrypt        = true
   }
 }
 provider "aws" {
